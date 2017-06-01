@@ -50,7 +50,7 @@ class Coordinator:
     update_interval = 5.0
     report_interval = 30.0
     stats_interval = 900.0
-    position_expiry_age = 30.0
+    position_expiry_age = 5.0
     expiry_age = 60.0
 
     def __init__(self, receiver, server, outputs, freq, allow_anon, allow_modeac):
@@ -346,14 +346,14 @@ class Coordinator:
         ac.messages += 1
         ac.last_message_time = now
 
-        if ac.messages < 10:
+        if ac.messages < 5:
             return   # wait for more messages
         if not ac.requested:
             return
 
         # Candidate for MLAT
-        if now - ac.last_position_time < self.position_expiry_age:
-            return   # reported position recently, no need for mlat
+        #if now - ac.last_position_time < self.position_expiry_age:
+        #   return   # reported position recently, no need for mlat
         self.server.send_mlat(message)
 
     def received_df11(self, message, now):
@@ -370,14 +370,14 @@ class Coordinator:
         ac.messages += 1
         ac.last_message_time = now
 
-        if ac.messages < 10:
+        if ac.messages < 5:
             return   # wait for more messages
         if not ac.requested:
             return
 
         # Candidate for MLAT
-        if now - ac.last_position_time < self.position_expiry_age:
-            return   # reported position recently, no need for mlat
+        #if now - ac.last_position_time < self.position_expiry_age:
+        #    return   # reported position recently, no need for mlat
         self.server.send_mlat(message)
 
     def received_df17(self, message, now):
@@ -430,6 +430,9 @@ class Coordinator:
 
             # this is a useful reference message pair
             self.server.send_sync(ac.even_message, ac.odd_message)
+
+            #df17 message alos send to mlat server
+            self.server.send_mlat(message)
 
     def received_modeac(self, message, now):
         if message.address not in self.requested_modeac:
