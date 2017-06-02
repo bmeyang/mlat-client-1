@@ -5,7 +5,7 @@ import _thread
 from mlat.client.util import monotonic_time
 
 class MSerialPort:
-    report_interval = 10.0
+    report_interval = 2s0.0
 
     def __init__(self,port,buand,coor):
         self.port=serial.Serial(port,baudrate=buand )
