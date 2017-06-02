@@ -28,6 +28,7 @@ class MSerialPort:
                     if(lon==0 || lat==0):
                         continue
                     if(self.coordinator):
+                        print(line , lon ,lat , alt)
                         self.coordinator.gps_position_update_event(lat,lon,alt)
                 except Exception:
                     continue
