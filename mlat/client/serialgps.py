@@ -4,8 +4,8 @@ import time
 import _thread
 
 class MSerialPort:
-    def __init__(self,port,buand):
-        self.port=serial.Serial(port,buand ,coor)
+    def __init__(self,port,buand,coor):
+        self.port=serial.Serial(port,buand )
         self.coordinator = coor
         if not self.port.isOpen():
             self.port.open()
