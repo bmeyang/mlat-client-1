@@ -320,7 +320,6 @@ class JsonServerConnection(mlat.client.net.ReconnectingConnection):
         self._send_json({'clock_reset': details})
 
     def send_position_update(self, lat, lon, alt, altref):
-        #pass
         location = {'lon':0 , 'lat':0  , 'alt':0}
         location['lon']=lon
         location['lat']=lat

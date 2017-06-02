@@ -2,11 +2,15 @@ import serial
 import pynmea2
 import time
 import _thread
+from mlat.client.util import monotonic_time
 
 class MSerialPort:
+    report_interval = 10.0
+
     def __init__(self,port,buand,coor):
         self.port=serial.Serial(port,baudrate=buand )
         self.coordinator = coor
+        self.next_update_time =monotonic_time() + report_interval
         if not self.port.isOpen():
             self.port.open()
     def port_open(self):
@@ -29,7 +33,10 @@ class MSerialPort:
                         continue
                     if(self.coordinator):
                         print(line , lon ,lat , alt)
-                        self.coordinator.gps_position_update_event(lat,lon,alt)
+                        now =monotonic_time()
+                        if now > self.next_update_time:
+                            self.coordinator.gps_position_update_event(lat,lon,alt)
+                            self.next_update_time = monotonic_time() + report_interval
                 except Exception:
                     continue
 

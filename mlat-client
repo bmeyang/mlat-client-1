@@ -100,12 +100,16 @@ location pin from the coverage maps.""",
     coordinator = Coordinator(receiver=receiver, server=server, outputs=outputs, freq=options.clock_frequency(args),
                               allow_anon=args.allow_anon_results, allow_modeac=args.allow_modeac_results)
 
-
     server.start()
 
     if(args.allow_gps):
         #Serial GPS
-        serialGPS = MSerialPort("/dev/ttyACM0", 9600, coordinator)
+        GpsDevName =args.gpsdev ;
+        if(len(GpsDevName) ==0):
+            GpsDevName = "/dev/ttyACM0"
+        print("Info:open gps dev:%s" % GpsDevName)
+
+        serialGPS = MSerialPort(GpsDevName, 9600, coordinator)
         _thread.start_new_thread(serialGPS.read_data())
 
     coordinator.run_forever()

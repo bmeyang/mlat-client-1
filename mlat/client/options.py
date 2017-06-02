@@ -108,6 +108,11 @@ def make_inputs_group(parser):
                         dest='allow_gps' ,
                         default=False)
 
+    inputs.add_argument('--gps-dev',
+                        help="gps dev name.",
+                        action='store',
+                        dest='gpsdev')
+
 def clock_frequency(args):
     return _modes.Reader(_receiver_types[args.input_type][0]).frequency
 
