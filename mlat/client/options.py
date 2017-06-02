@@ -102,6 +102,11 @@ def make_inputs_group(parser):
                         type=hostport,
                         default=('localhost', 30005))
 
+    inputs.add_argument('--allow-gps',
+                        help="use serial port gps to update receiver position.",
+                        action='store_true',
+                        dest='allow_gps' ,
+                        default=False)
 
 def clock_frequency(args):
     return _modes.Reader(_receiver_types[args.input_type][0]).frequency

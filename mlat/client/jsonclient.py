@@ -321,7 +321,8 @@ class JsonServerConnection(mlat.client.net.ReconnectingConnection):
 
     def send_position_update(self, lat, lon, alt, altref):
         #pass
-        location['lon']=lon
+        location = {'lon':0 , 'lat':0  , 'alt':0}
+        lsocation['lon']=lon
         location['lat']=lat
         location['alt']=alt
         self._send_json({'position_update': location})

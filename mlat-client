@@ -73,6 +73,8 @@ location pin from the coverage maps.""",
                         action='store_false',
                         default=True)
 
+
+
     args = parser.parse_args()
 
     log("mlat-client {version} starting up", version=mlat.client.version.CLIENT_VERSION)
@@ -98,10 +100,14 @@ location pin from the coverage maps.""",
     coordinator = Coordinator(receiver=receiver, server=server, outputs=outputs, freq=options.clock_frequency(args),
                               allow_anon=args.allow_anon_results, allow_modeac=args.allow_modeac_results)
 
-    sergps =MSerialPort("/dev/ttyACM0" ,9600 , coordinator)
 
     server.start()
-    _thread.start_new_thread(sergps.read_data())
+
+    if(args.allow_gps):
+        #Serial GPS
+        serialGPS = MSerialPort("/dev/ttyACM0", 9600, coordinator)
+        _thread.start_new_thread(serialGPS.read_data())
+
     coordinator.run_forever()
 
 if __name__ == '__main__':
