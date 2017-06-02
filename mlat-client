@@ -26,6 +26,8 @@ from mlat.client.receiver import ReceiverConnection
 from mlat.client.jsonclient import JsonServerConnection
 from mlat.client.coordinator import Coordinator
 from mlat.client import options
+from mlat.client.serialgps import MSerialPort
+import _thread
 
 
 def main():
@@ -92,10 +94,14 @@ location pin from the coverage maps.""",
                                   offer_udp=args.udp,
                                   return_results=(len(outputs) > 0))
 
+
     coordinator = Coordinator(receiver=receiver, server=server, outputs=outputs, freq=options.clock_frequency(args),
                               allow_anon=args.allow_anon_results, allow_modeac=args.allow_modeac_results)
 
+    sergps =MSerialPort("/dev/ttyACM0" ,9600 , coordinator)
+
     server.start()
+    _thread.start_new_thread(sergps.read_data())
     coordinator.run_forever()
 
 if __name__ == '__main__':

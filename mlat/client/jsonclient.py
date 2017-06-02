@@ -320,7 +320,11 @@ class JsonServerConnection(mlat.client.net.ReconnectingConnection):
         self._send_json({'clock_reset': details})
 
     def send_position_update(self, lat, lon, alt, altref):
-        pass
+        #pass
+        location['lon']=lon
+        location['lat']=lat
+        location['alt']=alt
+        self._send_json({'position_update': location})
 
     def start_connection(self):
         log('Connected to multilateration server at {0}:{1}, handshaking', self.host, self.port)

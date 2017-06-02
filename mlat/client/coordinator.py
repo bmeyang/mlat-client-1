@@ -338,6 +338,10 @@ class Coordinator:
                                          message.eventdata['alt'],
                                          'egm96_meters')
 
+    def gps_position_update_event(self ,lat ,lon ,alt):
+        self.server.send_position_update(lat , lon , alt ,'egm96_meters')
+
+
     def received_df_misc(self, message, now):
         ac = self.aircraft.get(message.address)
         if not ac:
