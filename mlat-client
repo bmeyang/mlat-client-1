@@ -27,7 +27,7 @@ from mlat.client.jsonclient import JsonServerConnection
 from mlat.client.coordinator import Coordinator
 from mlat.client import options
 from mlat.client.serialgps import MSerialPort
-import _thread
+import threading
 
 
 def main():
@@ -103,14 +103,19 @@ location pin from the coverage maps.""",
     server.start()
 
     if(args.allow_gps):
-        #Serial GPS
+
         GpsDevName =args.gpsdev ;
         if(len(GpsDevName) ==0):
             GpsDevName = "/dev/ttyACM0"
         print("Info:open gps dev:%s" % GpsDevName)
 
-        serialGPS = MSerialPort(GpsDevName, 9600, coordinator)
-        _thread.start_new_thread(serialGPS.read_data())
+        try:
+            serialGPS = MSerialPort(GpsDevName, 9600, coordinator)
+            t=threading.Thread(target=serialGPS.read_data)
+            t.setDaemon(True)
+            t.start()
+        except Exception:
+            print("Error:open GPS Failed!")
 
     coordinator.run_forever()
 
