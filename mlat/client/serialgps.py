@@ -25,7 +25,7 @@ class MSerialPort:
                     lon = rmc.longitude
                     lat = rmc.latitude
                     alt = rmc.altitude
-                    if(lon==0 || lat==0):
+                    if(lon==0 or lat==0):
                         continue
                     if(self.coordinator):
                         print(line , lon ,lat , alt)
