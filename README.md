@@ -54,9 +54,9 @@ crippled timestamp in its output, making it useless for multilateration.
 If you have one of these, you should ask FR24 to fix this.
 
 ## need python packge
-*pyserial
+* pyserial
 sudo pip3 install pyserial
-*pynmea2
+* pynmea2
 sudo pip3 install pynmea2
 
 ## License
