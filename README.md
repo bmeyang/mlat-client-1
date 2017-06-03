@@ -53,6 +53,12 @@ server's administrator for configuration instructions.
 crippled timestamp in its output, making it useless for multilateration.
 If you have one of these, you should ask FR24 to fix this.
 
+## need python packge
+*pyserial
+sudo pip3 install pyserial
+*pynmea2
+sudo pip3 install pynmea2
+
 ## License
 
 Copyright 2015, [Oliver Jowett](mailto:oliver@mutability.co.uk).
