@@ -36,7 +36,8 @@ class MSerialPort:
                         if now > self.next_update_time:
                             self.coordinator.gps_position_update_event(lat,lon,alt)
                             self.next_update_time = monotonic_time() + self.report_interval
-            except Exception:
-                continue
+            except Exception as e:
+                print("Error:Read GPS Serial Port Data Failed! Stop Read!!! ==>" ,e)
+                break
 
 
