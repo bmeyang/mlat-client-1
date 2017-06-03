@@ -18,15 +18,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import argparse
-
 import mlat.client.version
-
 from mlat.client.util import log
 from mlat.client.receiver import ReceiverConnection
 from mlat.client.jsonclient import JsonServerConnection
 from mlat.client.coordinator import Coordinator
 from mlat.client import options
-from mlat.client.serialgps import MSerialPort
 import threading
 
 
@@ -103,19 +100,19 @@ location pin from the coverage maps.""",
     server.start()
 
     if(args.allow_gps):
-
-        GpsDevName =args.gpsdev ;
-        if(len(GpsDevName) ==0):
-            GpsDevName = "/dev/ttyACM0"
-        print("Info:open gps dev:%s" % GpsDevName)
-
         try:
-            serialGPS = MSerialPort(GpsDevName, 9600, coordinator)
-            t=threading.Thread(target=serialGPS.read_data)
-            t.setDaemon(True)
-            t.start()
-        except Exception:
-            print("Error:open GPS Failed!")
+            from mlat.client.serialgps import MSerialPort
+            GPSDevName =args.gpsdev ;
+            if(len(GPSDevName) ==0):
+                GPSDevName = "/dev/ttyACM0"
+            print("INFO:Open GPS Dev:%s ." % GPSDevName)
+
+            serialGPS = MSerialPort(GPSDevName, 9600, coordinator)
+            GPSThread=threading.Thread(target=serialGPS.read_data)
+            GPSThread.setDaemon(True)
+            GPSThread.start()
+        except Exception as e:
+            print("ERROR:Open GPS Dev Failed! => " ,e)
 
     coordinator.run_forever()
 
