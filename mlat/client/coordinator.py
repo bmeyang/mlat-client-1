@@ -437,10 +437,32 @@ class Coordinator:
 
             # this is a useful reference message pair
             self.server.send_sync(ac.even_message, ac.odd_message)
+            self.server.send_mlat(message)
 
 
     def received_modeac(self, message, now):
-        if message.address not in self.requested_modeac:
+        #AC Mode
+
+        #print("received_modeac : " ,message.address )
+        ac = self.aircraft.get(message.address)
+        if not ac:
+            ac = Aircraft(message.address)
+            ac.requested = (message.address in self.requested_traffic)
+            ac.messages += 1
+            ac.last_message_time = now
+            ac.rate_measurement_start = now
+            self.aircraft[message.address] = ac
+            return  # wait for more messages
+
+        ac.messages += 1
+        ac.last_message_time = now
+        if ac.messages < 10:
+            return
+
+        ac.recent_adsb_positions += 1
+        #if message.address not in self.requested_modeac:
+        #    return
+        if not ac.requested:
             return
 
         self.server.send_mlat(message)
