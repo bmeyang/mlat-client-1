@@ -441,9 +441,7 @@ class Coordinator:
 
 
     def received_modeac(self, message, now):
-        #AC Mode
-
-        #print("received_modeac : " ,message.address )
+        '''
         ac = self.aircraft.get(message.address)
         if not ac:
             ac = Aircraft(message.address)
@@ -466,3 +464,5 @@ class Coordinator:
             return
 
         self.server.send_mlat(message)
+        '''
+        pass

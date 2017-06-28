@@ -388,7 +388,6 @@ static int decode(modesmessage *self)
 
     if (self->datalen == 2) {
     //AC Message decode , A Mode Start With 0xFFXXXX
-
         unsigned char ac[2] ;
         memcpy(ac , self->data , 2);
         ac_decode_result_t  ac_ret  = ac_decode(ac) ;

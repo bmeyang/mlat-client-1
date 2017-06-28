@@ -1383,6 +1383,7 @@ static int filter_message(modesreader *self, PyObject *o)
 {
     modesmessage *message = (modesmessage *)o;
 
+  /*
     if (message->df == DF_MODEAC) {
         if (self->seen != NULL && self->seen != Py_None)
          {
@@ -1391,13 +1392,17 @@ static int filter_message(modesreader *self, PyObject *o)
             }
          }
 
-
        // if (self->modeac_filter != NULL && self->modeac_filter != Py_None) {
           //  return PySequence_Contains(self->modeac_filter, message->address);
        // }
        // return -1;
 
        return 1 ;
+    }
+    */
+    if (message->df == DF_MODEAC)
+    {
+    return 0 ;
     }
 
 
