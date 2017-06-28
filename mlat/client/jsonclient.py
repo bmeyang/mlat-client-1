@@ -36,7 +36,7 @@ import mlat.geodesy
 from mlat.client.util import log, monotonic_time
 from mlat.client.stats import global_stats
 
-DEBUG = True
+DEBUG = False
 
 # UDP protocol submessages
 
