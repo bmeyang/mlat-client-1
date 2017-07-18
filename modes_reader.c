@@ -1399,10 +1399,11 @@ static int filter_message(modesreader *self, PyObject *o)
        return 1 ;
     }
 
-    if (message->df == DF_MODEAC)
-    {
+    /*
+    if (message->df == DF_MODEAC){
     return 0 ;
     }
+    */
 
 
  if (!message->valid) {
