@@ -460,5 +460,7 @@ class Coordinator:
         #if message.address not in self.requested_modeac:
         #    return
         if not ac.requested:
-            self.server.send_mlat(message)
+            return
+
+        self.server.send_mlat(message)
 
