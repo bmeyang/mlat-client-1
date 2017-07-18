@@ -400,8 +400,8 @@ class Coordinator:
         if ac.messages < 10:
             return
 
-        # df17 message alos send to mlat server
-        self.server.send_mlat(message)
+        # df17 message alos send to mlat server<<<<<====================
+        #self.server.send_mlat(message)
 
         if not message.even_cpr and not message.odd_cpr:
             # not a position message
@@ -437,7 +437,7 @@ class Coordinator:
 
             # this is a useful reference message pair
             self.server.send_sync(ac.even_message, ac.odd_message)
-            #self.server.send_mlat(message)
+
 
 
     def received_modeac(self, message, now):
