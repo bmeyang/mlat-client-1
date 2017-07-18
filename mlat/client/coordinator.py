@@ -441,7 +441,6 @@ class Coordinator:
 
 
     def received_modeac(self, message, now):
-        '''
         ac = self.aircraft.get(message.address)
         if not ac:
             ac = Aircraft(message.address)
@@ -450,7 +449,7 @@ class Coordinator:
             ac.last_message_time = now
             ac.rate_measurement_start = now
             self.aircraft[message.address] = ac
-            return  # wait for more messages
+            return  # wait for more messages return
 
         ac.messages += 1
         ac.last_message_time = now
@@ -461,8 +460,7 @@ class Coordinator:
         #if message.address not in self.requested_modeac:
         #    return
         if not ac.requested:
-            return
+
 
         self.server.send_mlat(message)
-        '''
-        pass
+

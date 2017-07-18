@@ -1383,7 +1383,6 @@ static int filter_message(modesreader *self, PyObject *o)
 {
     modesmessage *message = (modesmessage *)o;
 
-  /*
     if (message->df == DF_MODEAC) {
         if (self->seen != NULL && self->seen != Py_None)
          {
@@ -1399,7 +1398,7 @@ static int filter_message(modesreader *self, PyObject *o)
 
        return 1 ;
     }
-    */
+
     if (message->df == DF_MODEAC)
     {
     return 0 ;
