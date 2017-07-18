@@ -391,19 +391,16 @@ static int decode(modesmessage *self)
         unsigned char ac[2] ;
         memcpy(ac , self->data , 2);
         ac_decode_result_t  ac_ret  = ac_decode(ac) ;
-        if(ac_ret.type == AC_MODE_A)
-        {
+        if(ac_ret.type == AC_MODE_A){
             self->df = DF_MODEAC;
             int ac_fix_icao = 0x00FF0000 | ac_ret.squawk ;
             self->address = PyLong_FromLong(ac_fix_icao) ;
             self->valid = 1;
-            return 0;
         }
         else
-            {
              self->valid = 0;
-            }
 
+        return 0 ;
     }
 
 
