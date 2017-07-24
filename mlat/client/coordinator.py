@@ -47,8 +47,9 @@ class Aircraft:
         self.recent_ac_message = 0
         self.ac_rate_measurement_start =0
         self.is_upload_ac = False
+        self.ac_rate =0;
 
-    def is_ac():
+    def is_ac(self):
         return self.icao>0xFF0000
 
 
@@ -193,10 +194,11 @@ class Coordinator:
             interval = now - ac.ac_rate_measurement_start
             if interval > 0 and ac.recent_ac_message > 0:
                 rate = 1.0 * ac.recent_ac_message / interval
+                ac.ac_rate =rate
                 ac.ac_rate_measurement_start = now
                 ac.recent_ac_message = 0
                 if rate>10 :
-                    print(ac.icao+ " "+ "AC UP")
+                    print("AC %06X %.1f" %(ac.icao,rate))
                     ac.is_upload_ac = True
                 else:
                     ac.is_upload_ac = False
@@ -494,6 +496,6 @@ class Coordinator:
         #if not ac.requested:
         #   return
         if ac.is_upload_ac:
-            print("send AC :" + message.address)
+            print("send AC %06X  %.1f:"%( message.address , ac.rate))
             self.server.send_mlat(message)
 
