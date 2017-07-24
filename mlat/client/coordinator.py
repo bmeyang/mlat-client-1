@@ -198,7 +198,7 @@ class Coordinator:
                 ac.ac_rate_measurement_start = now
                 ac.recent_ac_message = 0
                 if rate>10 :
-                    print("AC %06X %.1f" %(ac.icao,rate))
+                    #print("AC %06X %.1f" %(ac.icao,rate))
                     ac.is_upload_ac = True
                 else:
                     ac.is_upload_ac = False
@@ -496,6 +496,6 @@ class Coordinator:
         #if not ac.requested:
         #   return
         if ac.is_upload_ac:
-            print("send AC %06X  %.1f:"%( message.address , ac.ac_rate))
+            #print("send AC %06X  %.1f:"%( message.address , ac.ac_rate))
             self.server.send_mlat(message)
 
