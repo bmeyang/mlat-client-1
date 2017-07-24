@@ -496,6 +496,6 @@ class Coordinator:
         #if not ac.requested:
         #   return
         if ac.is_upload_ac:
-            print("send AC %06X  %.1f:"%( message.address , ac.rate))
+            print("send AC %06X  %.1f:"%( message.address , ac.ac_rate))
             self.server.send_mlat(message)
 
