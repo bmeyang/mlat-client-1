@@ -48,8 +48,8 @@ class Aircraft:
         self.ac_rate_measurement_start =0
         self.is_upload_ac = False
 
-        def is_ac():
-            return self.icao>0xFF0000
+    def is_ac():
+        return self.icao>0xFF0000
 
 
 class Coordinator:
