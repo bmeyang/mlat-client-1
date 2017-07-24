@@ -187,7 +187,11 @@ class Coordinator:
                 rate = 1.0 * ac.recent_adsb_positions / interval
                 ac.rate_measurement_start = now
                 ac.recent_adsb_positions = 0
-                rate_report[ac.icao] = rate
+                if ac.address <0xFF0000:
+                    rate_report[ac.icao] = rate
+                else:
+                    if rate>10:
+                        rate_report[ac.icao] = rates
 
         if rate_report:
             self.server.send_rate_report(rate_report)
