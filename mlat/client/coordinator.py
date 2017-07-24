@@ -44,6 +44,12 @@ class Aircraft:
         self.measurement_start = None
         self.rate_measurement_start = 0
         self.recent_adsb_positions = 0
+        self.recent_ac_message = 0
+        self.ac_rate_measurement_start =0
+        self.is_upload_ac = False
+
+        def is_ac():
+            return self.icao>0xFF0000
 
 
 class Coordinator:
@@ -52,6 +58,7 @@ class Coordinator:
     stats_interval = 900.0
     position_expiry_age = 5.0
     expiry_age = 60.0
+    ac_sata_interval = 5.0
 
     def __init__(self, receiver, server, outputs, freq, allow_anon, allow_modeac):
         self.receiver = receiver
@@ -129,6 +136,7 @@ class Coordinator:
         if now >= self.next_aircraft_update:
             self.next_aircraft_update = now + self.update_interval
             self.update_aircraft(now)
+            self.ac_rate_stat(now)
 
             # piggyback reporting on regular updates
             # as the reporting uses data produced by the update
@@ -177,6 +185,22 @@ class Coordinator:
             self.server.send_lost(lost_ac)
 
         self.reported = all_aircraft
+
+    def ac_rate_stat(self, now):
+        for ac in self.aircraft.values():
+            if not ac.is_ac():
+                continue
+            interval = now - ac.ac_rate_measurement_start
+            if interval > 0 and ac.recent_ac_message > 0:
+                rate = 1.0 * ac.recent_ac_message / interval
+                ac.ac_rate_measurement_start = now
+                ac.recent_ac_message = 0
+                if rate>10 :
+                    print(ac.icao+ " "+ "AC UP")
+                    ac.is_upload_ac = True
+                else:
+                    ac.is_upload_ac = False
+
 
     def send_rate_report(self, now):
         # report ADS-B position rate stats
@@ -442,7 +466,8 @@ class Coordinator:
             # this is a useful reference message pair
             self.server.send_sync(ac.even_message, ac.odd_message)
 
-
+        self.recent_ac_message = 0
+        self.ac_rate_measurement_start =0
 
     def received_modeac(self, message, now):
         ac = self.aircraft.get(message.address)
@@ -452,9 +477,12 @@ class Coordinator:
             ac.messages += 1
             ac.last_message_time = now
             ac.rate_measurement_start = now
+            ac.ac_rate_measurement_start = now
+            ac.recent_ac_message =1
             self.aircraft[message.address] = ac
             return  # wait for more messages return
 
+        ac.recent_ac_message+=1
         ac.messages += 1
         ac.last_message_time = now
         if ac.messages < 10:
@@ -463,8 +491,9 @@ class Coordinator:
         ac.recent_adsb_positions += 1
         #if message.address not in self.requested_modeac:
         #    return
-        if not ac.requested:
-            return
-
-        self.server.send_mlat(message)
+        #if not ac.requested:
+        #   return
+        if ac.is_upload_ac:
+            print("send AC :" + message.address)
+            self.server.send_mlat(message)
 
