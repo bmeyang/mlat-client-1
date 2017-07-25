@@ -388,7 +388,7 @@ class Coordinator:
         # Candidate for MLAT
         #if now - ac.last_position_time < self.position_expiry_age:
         #   return   # reported position recently, no need for mlat
-        #self.server.send_mlat(message)
+        self.server.send_mlat(message)
 
     def received_df11(self, message, now):
         ac = self.aircraft.get(message.address)
@@ -412,7 +412,7 @@ class Coordinator:
         # Candidate for MLAT
         #if now - ac.last_position_time < self.position_expiry_age:
         #    return   # reported position recently, no need for mlat
-        #self.server.send_mlat(message)
+        self.server.send_mlat(message)
 
     def received_df17(self, message, now):
         ac = self.aircraft.get(message.address)
@@ -431,7 +431,7 @@ class Coordinator:
             return
 
         # df17 message alos send to mlat server<<<<<====================
-        #self.server.send_mlat(message)
+        self.server.send_mlat(message)
 
         if not message.even_cpr and not message.odd_cpr:
             # not a position message
